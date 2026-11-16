@@ -75,7 +75,7 @@ function answerText(item){
  if(item.type==='判断题')return item.a==='正确'?'正确':'错误';
  const letters=correctLetters(item);
  if(!letters.length)return item.a||'题库未提供答案';
- return letters.map(c=>{const op=item.o.find(x=>new RegExp('^\\s*'+c+'[.．、)]').test(x));return op||c}).join('\n');
+ return letters.join('、');
 }
 function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function showMatches(ocr){
