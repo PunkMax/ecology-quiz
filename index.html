@@ -31,6 +31,56 @@ textarea{width:100%;min-height:104px;border:1px solid #cbdad6;border-radius:10px
 .score{float:right;color:#60736f;font-size:12px}
 #results:empty:after{content:"识别或输入题目后，匹配结果会显示在这里。";color:#8a9995;font-size:13px}
 footer{font-size:12px;color:#71817d;text-align:center;padding:8px}
+
+/* 手机单屏紧凑布局 */
+html,body{height:100%;min-height:0}
+body{overflow:hidden}
+header{padding:9px 13px 8px}
+header h1{font-size:17px;margin:0 0 2px}
+header p{font-size:11px;line-height:1.35}
+main{
+  height:calc(100dvh - 56px);
+  max-width:760px;
+  margin:0 auto;
+  padding:7px 9px calc(7px + env(safe-area-inset-bottom));
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  overflow:hidden;
+}
+.panel{margin:0;padding:9px 10px;border-radius:12px;box-shadow:none}
+.panel h2{font-size:14px;margin:0 0 7px}
+main>.panel:first-child{flex:0 0 auto}
+.actions{gap:6px}
+button,.filebtn{padding:9px 11px;font-size:13px;border-radius:9px}
+#camera{max-height:19dvh;width:100%;margin-top:7px;object-fit:contain}
+#preview{max-height:19dvh;margin-top:6px}
+#ocrStatus{font-size:11px;line-height:1.35;margin-top:5px;min-height:15px}
+.small{font-size:10px;line-height:1.35;margin:5px 0 0}
+main>.panel:nth-of-type(2){flex:1 1 auto;min-height:0;overflow:auto}
+#results{display:grid;grid-template-columns:1fr;gap:6px}
+.result{margin:0;padding:8px 9px;border-radius:9px}
+.result h3{font-size:12px;line-height:1.4;margin:2px 0 5px}
+.meta{font-size:10px;margin-bottom:3px}
+.option{font-size:11px;line-height:1.3;padding:2px 5px;margin:1px 0}
+.answer{font-size:11px;padding:3px 7px;margin-top:5px}
+footer{display:none}
+#results:empty:after{font-size:11px}
+@media (max-width:390px){
+  header h1{font-size:16px}
+  main{padding-left:7px;padding-right:7px;gap:6px}
+  .panel{padding:8px}
+  button,.filebtn{padding:8px 9px;font-size:12px}
+  #camera,#preview{max-height:16dvh}
+  .small{font-size:9px}
+}
+@media (max-height:700px){
+  header{padding-top:6px;padding-bottom:5px}
+  main{height:calc(100dvh - 46px);padding-top:5px;gap:5px}
+  #camera,#preview{max-height:14dvh}
+  .small{display:none}
+}
+
 </style>
 </head>
 <body>
@@ -49,17 +99,12 @@ footer{font-size:12px;color:#71817d;text-align:center;padding:8px}
 <canvas id="canvas" hidden></canvas>
 <img id="preview" alt="拍摄或选择的题目图片">
 <div id="ocrStatus" class="status">提示：首次使用OCR需联网下载中文识别组件和语言数据。</div>
-<p class="small">建议将题干和选项完整拍入画面，保持文字清晰、避免倾斜和反光。摄像头需要在 HTTPS 网页或 localhost 环境下使用；直接用手机打开本地 HTML 文件可能无法授权摄像头。</p>
+<p class="small">将题干和选项对准画面；摄像头需在HTTPS网页中使用。</p>
 </section>
-<section class="panel">
-<h2>② 识别文字（可手动修改）</h2>
-<textarea id="ocrText" placeholder="拍照识别后的文字会显示在这里；也可以直接粘贴或输入题干关键词。"></textarea>
-<div class="actions" style="margin-top:9px">
-<button id="search">在题库中查找答案</button>
-<button id="clear" class="secondary">清空</button>
-</div>
-<div class="status" id="searchStatus"></div>
-</section>
+<textarea id="ocrText" aria-hidden="true" tabindex="-1" style="display:none"></textarea>
+<div id="searchStatus" class="status" style="display:none"></div>
+<button id="search" style="display:none">在题库中查找答案</button>
+<button id="clear" style="display:none">清空</button>
 <section class="panel">
 <h2>③ 题库匹配结果</h2>
 <div id="results"></div>
